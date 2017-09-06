@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+from setuptools import setup, find_packages
+
+version = '0.1dev'
+
+print '''------------------------------
+Installing OMdatabase version {}
+------------------------------
+'''.format(version)
+
+setup(
+    name='OMdatabase',
+    version=version,
+    author='lx Gui',
+    author_email='guilixuan@gmail.com',
+    keywords=['bioinformatics', 'NGS'],
+    license='MIT',
+    packages=find_packages(),
+    include_package_data=True,
+    scripts=[],
+    install_requires=[],
+)
+
+print '''------------------------------
+OMdatabase installation complete!
+------------------------------
+'''
