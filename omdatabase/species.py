@@ -65,6 +65,7 @@ class Species(object):
 
         self.name2gi = get_name_inf(name2gi_json, name_inf_file)
 
+    @property
     def kingdom(self):
         if not self.name2gi or not self.gi2div:
             self._get_species_inf()
