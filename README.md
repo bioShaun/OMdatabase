@@ -1,2 +1,6 @@
 # OMdatabase
-prepare database for OM project
+
+Command line tool for prepare database for NGS analysis
+
+-----
+

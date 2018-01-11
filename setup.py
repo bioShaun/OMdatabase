@@ -18,8 +18,10 @@ setup(
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
-    scripts=[],
-    install_requires=[],
+    scripts=['scripts/oms_database'],
+    install_requires=[
+        'pyyaml',
+    ],
 )
 
 print '''------------------------------
