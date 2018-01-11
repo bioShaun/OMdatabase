@@ -1,0 +1,22 @@
+## config file for build databases for different species
+## from different public databases
+
+BASE_DIR: '/public/database/'
+
+
+ANALYSIS:
+  mirna:
+    - bowtie
+  rnaseq:
+    - star
+    - kallisto
+  reseq:
+    - bwa
+
+
+CMD:
+  bowtie: 'mkdir -p {t.path}/bowtie1_index |
+           ln -s {t.genome} {t.path}/bowtie1_index/{t.species}.genome.fa|
+           bowtie-build {t.path}/bowtie1_index/{t.species}.genome.fa {t.path}/bowtie1_index/{t.species}.genome'
+
+

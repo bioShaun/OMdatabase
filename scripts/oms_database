@@ -1,0 +1,48 @@
+#! /usr/bin/env python
+
+import click
+from omdatabase.lib.build import BuildIndex
+
+
+@click.command()
+@click.option(
+    '-s',
+    '--species',
+    type=click.STRING,
+    required=True,
+    help='Species latin name.'
+)
+@click.option(
+    '-d',
+    '--database',
+    type=click.STRING,
+    default='ensembl',
+    help='Public database name.'
+)
+@click.option(
+    '-v',
+    '--version',
+    type=click.STRING,
+    default='current',
+    help='Database version.'
+)
+@click.option(
+    '-a',
+    '--analysis',
+    type=click.STRING,
+    default='rnaseq',
+    help='Analysis for which the database is build for.'
+)
+def main(species, database, version, analysis):
+    '''Command line tool for prepare database for NGS analysis
+    '''
+    my_build = BuildIndex(species,
+                          database=database,
+                          version=version,
+                          analysis=analysis)
+    my_build.build()
+
+
+if __name__ == '__main__':
+    main()
+
