@@ -31,7 +31,7 @@ class Species(object):
     TODO: accelerate, too slow
     '''
     def __init__(self, search_id):
-        self.search_id = search_id
+        self.search_id = ' '.join(search_id.split('_'))
         self.tax_dir = os.path.join(script_path, 'taxdump')
         self.name2gi = dict()
         self.gi2div = dict()

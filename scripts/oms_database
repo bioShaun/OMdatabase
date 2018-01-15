@@ -2,6 +2,9 @@
 
 import click
 from omdatabase.lib.build import BuildIndex
+from omdatabase.lib.download import DownloadDB
+from omdatabase.database.db_collection import DatabaseInf
+from omdatabase.database.db_path import DatabasePath
 
 
 @click.command()
@@ -36,11 +39,23 @@ from omdatabase.lib.build import BuildIndex
 def main(species, database, version, analysis):
     '''Command line tool for prepare database for NGS analysis
     '''
-    my_build = BuildIndex(species,
-                          database=database,
-                          version=version,
-                          analysis=analysis)
-    my_build.build()
+    # login ftp and get species database information
+    click.secho('Get database information.')
+    my_db_cons = DatabaseInf(database, species, version)
+    my_db_inf = my_db_cons.download_inf
+    # get database path
+    click.secho('Get database local path.')
+    my_dbpath = DatabasePath.from_dbobj(my_db_inf)
+
+    # download database to local
+    my_download = DownloadDB(my_db_inf, my_dbpath)
+    my_download.download
+
+    # my_build = BuildIndex(species,
+    #                       database=database,
+    #                       version=version,
+    #                       analysis=analysis)
+    # my_build.build()
 
 
 if __name__ == '__main__':
