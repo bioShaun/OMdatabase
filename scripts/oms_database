@@ -51,11 +51,9 @@ def main(species, database, version, analysis):
     my_download = DownloadDB(my_db_inf, my_dbpath)
     my_download.download
 
-    # my_build = BuildIndex(species,
-    #                       database=database,
-    #                       version=version,
-    #                       analysis=analysis)
-    # my_build.build()
+    # build index for database
+    my_build = BuildIndex(my_db_inf, my_dbpath, analysis)
+    my_build.build
 
 
 if __name__ == '__main__':

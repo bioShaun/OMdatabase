@@ -13,10 +13,8 @@ ANALYSIS:
   reseq:
     - bwa
 
-
 CMD:
-  bowtie: 'mkdir -p {t.path}/bowtie1_index |
-           ln -s {t.genome} {t.path}/bowtie1_index/{t.species}.genome.fa|
-           bowtie-build {t.path}/bowtie1_index/{t.species}.genome.fa {t.path}/bowtie1_index/{t.species}.genome'
-
+  bowtie: 'mkdir -p {t.path.anno_dir}/bowtie1_index |
+           ln -s {t.path.genome_fa} {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa |
+           bowtie-build {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome'
 

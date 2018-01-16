@@ -89,5 +89,4 @@ class DownloadDB(object):
     def download(self):
         self._check_db()
         self._download_gtf()
-        # self._download_genome()
-
+        self._download_genome()
