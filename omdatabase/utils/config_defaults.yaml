@@ -17,4 +17,18 @@ CMD:
   bowtie: 'mkdir -p {t.path.anno_dir}/bowtie1_index |
            ln -s {t.path.genome_fa} {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa |
            bowtie-build {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome'
+  star: 'mkdir -p {t.path.anno_dir}/star_index |
+         STAR
+         --runThreadN 8
+         --runMode genomeGenerate
+         --genomeDir {t.path.anno_dir}/star_index
+         --genomeFastaFiles {t.path.genome_fa}
+         --sjdbGTFfile {t.path.genome_gtf}'
+  kallisto: 'gffread
+             {t.path.genome_gtf}
+             -g {t.path.genome_fa}
+             -w {t.path.anno_dir}/{t.db.species}.transcript.fa |
+             kallisto index
+             -i {t.path.anno_dir}/{t.db.species}.transcript.fa.kallisto_idx
+             {t.path.anno_dir}/{t.db.species}.transcript.fa'
 
