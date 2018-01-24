@@ -1,7 +1,7 @@
 ## config file for build databases for different species
 ## from different public databases
 
-BASE_DIR: '/workspace/public/database/'
+BASE_DIR: '/public/database/'
 
 
 ANALYSIS:
@@ -10,25 +10,91 @@ ANALYSIS:
   rnaseq:
     - star
     - kallisto
+    - go
+    - kegg
   reseq:
     - bwa
 
 CMD:
+  download_go: 'python {t.get_gene2tr_py}
+                --gff {t.path.genome_gtf}
+                --out_dir {t.path.anno_dir}
+                --name {t.db.species} |
+                Rscript {t.download_go_r}
+                --gene_tr_file {t.path.gene2tr}
+                --output {t.path.anno_dir}/{t.db.species}
+                --species {t.path.ensembl_sp}'
+  download_kegg: 'wget -c
+                  -O {t.path.ko_pep_dir}/{t.path.kegg_abbr}.pep.fasta.gz
+                  "http://kobas.cbi.pku.edu.cn/download_file.php?type=seq_pep&filename={t.path.kegg_abbr}.pep.fasta.gz" |
+                  gunzip -f {t.path.ko_pep_dir}/{t.path.kegg_abbr}.pep.fasta.gz |
+                  wget -c
+                  -O {t.path.ko_db_dir}/{t.path.kegg_abbr}.db.gz
+                  "http://kobas.cbi.pku.edu.cn/download_file.php?type=sqlite3&filename={t.path.kegg_abbr}.db.gz" |
+                  gunzip -f {t.path.ko_db_dir}/{t.path.kegg_abbr}.db.gz |
+                  makeblastdb
+                  -in {t.path.ko_pep_dir}/{t.path.kegg_abbr}.pep.fasta
+                  -dbtype prot'
   bowtie: 'mkdir -p {t.path.anno_dir}/bowtie1_index |
            ln -s {t.path.genome_fa} {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa |
-           bowtie-build {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome'
+           bowtie-build {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome.fa {t.path.anno_dir}/bowtie1_index/{t.db.species}.genome |
+           touch {t.path.anno_dir}/bowtie.finished'
   star: 'mkdir -p {t.path.anno_dir}/star_index |
          STAR
          --runThreadN 8
          --runMode genomeGenerate
          --genomeDir {t.path.anno_dir}/star_index
          --genomeFastaFiles {t.path.genome_fa}
-         --sjdbGTFfile {t.path.genome_gtf}'
+         --sjdbGTFfile {t.path.genome_gtf}
+         --outTmpDir {t.path.anno_dir}/star_index/tmpdir |
+         touch {t.path.anno_dir}/star.finished'
   kallisto: 'gffread
              {t.path.genome_gtf}
              -g {t.path.genome_fa}
              -w {t.path.anno_dir}/{t.db.species}.transcript.fa |
+             gffread
+             {t.path.genome_gtf}
+             -g {t.path.genome_fa}
+             -y {t.path.anno_dir}/{t.db.species}.transcript.pep.fa |
              kallisto index
              -i {t.path.anno_dir}/{t.db.species}.transcript.fa.kallisto_idx
-             {t.path.anno_dir}/{t.db.species}.transcript.fa'
+             {t.path.anno_dir}/{t.db.species}.transcript.fa |
+             touch {t.path.anno_dir}/kallisto.finished'
+  go: 'python {t.get_topgo_py}
+       --biomart_go {t.path.go}
+       --out_dir {t.path.anno_dir} |
+       python {t.get_go_anno_py}
+       {t.path.go}
+       {t.path.go_detail}
+       {t.path.go_anno} |
+       touch {t.path.anno_dir}/go.finished'
+  kegg: 'blastp
+         -query {t.path.anno_dir}/{t.db.species}.transcript.pep.fa
+         -db {t.path.ko_pep_dir}/{t.path.kegg_abbr}.pep.fasta
+         -evalue 1e-5
+         -outfmt 6
+         -max_target_seqs 1
+         -num_threads 8
+         -out {t.path.anno_dir}/{t.db.species}.tr.kegg.blasttab |
+         python {t.kegg_blast_tr2gene_py}
+         {t.path.genome_gtf}
+         {t.path.anno_dir}/{t.db.species}.tr.kegg.blasttab
+         {t.path.anno_dir}/{t.db.species}.gene.kegg.blasttab |
+         annotate.py
+         -i {t.path.anno_dir}/{t.db.species}.gene.kegg.blasttab
+         -t blastout:tab
+         -s {t.path.kegg_abbr}
+         -o {t.path.anno_dir}/{t.db.species}.gene.ko.anno |
+         python {t.kegg_anno_extract_py}
+         {t.path.anno_dir}/{t.db.species}.gene.ko.anno
+         {t.path.anno_dir}/{t.db.species}.gene.ko.anno.tab |
+         touch {t.path.anno_dir}/kegg.finished'
+
+SCRIPT:
+  get_gene2tr_py: 'get_gene_to_trans.py'
+  download_go_r: 'biomart_download.R'
+  get_topgo_py: 'topgo_format.py'
+  get_go_anno_py: 'go_anno.py'
+  kegg_blast_tr2gene_py: 'kegg_blast_tr_to_gene.py'
+  kegg_anno_extract_py: 'kegg_anno_extract.py'
 

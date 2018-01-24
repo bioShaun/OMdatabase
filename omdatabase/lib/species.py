@@ -1,5 +1,7 @@
 import json
 import os
+import ujson
+from omdatabase.utils import config
 
 
 script_path = os.path.dirname(os.path.realpath(__file__))
@@ -31,10 +33,11 @@ class Species(object):
     TODO: accelerate, too slow
     '''
     def __init__(self, search_id):
-        self.search_id = ' '.join(search_id.split('_'))
+        self.search_id = search_id
         self.tax_dir = os.path.join(script_path, 'taxdump')
         self.name2gi = dict()
         self.gi2div = dict()
+        self.name2kingdom = dict()
 
     def _get_species_inf(self):
         name2gi_json = os.path.join(self.tax_dir, 'name2gi.json')
@@ -69,17 +72,35 @@ class Species(object):
 
         self.name2gi = get_name_inf(name2gi_json, name_inf_file)
 
+    def _sp_to_kingdom(self):
+        # name2kingdom_file = os.path.join(self.tax_dir, 'name2kingdom.json')
+        # name2kingdom_file = os.path.join(self.tax_dir, 'name2kingdom.pickle')
+        name2kingdom_file = os.path.join(self.tax_dir, 'name2kingdom.ujson')
+        if not os.path.exists(name2kingdom_file):
+            self._get_species_inf()
+            for each_name in self.name2gi:
+                for each_cat in self.name2gi[each_name]:
+                    gi = self.name2gi[each_name][each_cat]
+                    if self.gi2div[gi] == '4':
+                        kingdom = 'plant'
+                    else:
+                        kingdom = 'animal'
+                    outname = '_'.join(each_name.split())
+                    self.name2kingdom[outname] = kingdom
+            with open(name2kingdom_file, 'wb') as kingdom_inf:
+                ujson.dump(self.name2kingdom, kingdom_inf)
+        else:
+            with open(name2kingdom_file) as kingdom_inf:
+                self.name2kingdom = ujson.load(kingdom_inf)
+
     @property
     def kingdom(self):
-        if not self.name2gi or not self.gi2div:
-            self._get_species_inf()
-        if self.search_id in self.name2gi:
-            for each_name in NAME_ORDER:
-                if each_name in self.name2gi[self.search_id]:
-                    gi = self.name2gi[self.search_id][each_name]
-                    if self.gi2div[gi] == '4':
-                        return 'plant'
-                    else:
-                        return 'animal'
+        if self.search_id in config.kingdom_saved:
+            return config.kingdom_saved[self.search_id]
+        self._sp_to_kingdom()
+        if self.search_id in self.name2kingdom:
+            kingdom = self.name2kingdom[self.search_id]
         else:
-            return 'unknown'
+            kingdom = 'unknown'
+        config.update_sp(self.search_id, kingdom)
+        return kingdom

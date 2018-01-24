@@ -21,8 +21,9 @@ setup(
     scripts=['scripts/oms_database'],
     install_requires=[
         'pyyaml',
-        'click',
-        'envoy'
+        'HTSeq',
+        'gtfparse',
+        'ujson'
     ],
 )
 

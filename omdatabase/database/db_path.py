@@ -1,5 +1,6 @@
 from omdatabase.utils import config
 import os
+import kobas.config as kobas_config
 
 
 class DatabasePath(object):
@@ -35,6 +36,21 @@ class DatabasePath(object):
 
         self.genome_fa = get_annotation_path('genome.fa')
         self.genome_gtf = get_annotation_path('genome.gtf')
+        self.gene2tr = get_annotation_path('gene_trans_map.txt')
+        self.ensembl_sp = '{p}{s}'.format(p=self.species[0],
+                                          s=self.species.split('_')[1])
+        # go file path
+        self.go = get_annotation_path('go.txt')
+        self.topgo = get_annotation_path('go_gene_go.txt')
+        self.go_detail = get_annotation_path('go_detail.txt')
+        self.go_anno = get_annotation_path('go_anno.txt')
+        self.gene_len = get_annotation_path('gene_length.txt')
+        # KEGG file path
+        kobasrc = kobas_config.getrc()
+        self.ko_pep_dir = kobasrc['blastdb']
+        self.ko_db_dir = kobasrc['kobasdb']
+        self.kegg_abbr = config.kegg_map[self.species]
+        self.kegg_blast = get_annotation_path('gene.kegg.blasttab')
 
     @classmethod
     def from_dbobj(cls, dbobj):
