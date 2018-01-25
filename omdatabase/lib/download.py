@@ -6,6 +6,7 @@ from omdatabase.utils import config
 import envoy
 
 
+
 def save_mkdir(path):
     if not os.path.isdir(path):
         os.makedirs(path)
@@ -49,7 +50,7 @@ class DownloadDB(object):
         self.download_genome = True
         self.download_gtf = True
         self.download_go = True
-        self.download_kegg = True
+        self.download_kegg = False
 
     def _check_db(self):
         if os.path.isfile(self.path.genome_fa):
@@ -62,8 +63,15 @@ class DownloadDB(object):
             save_mkdir(self.path.anno_dir)
         if os.path.isfile(self.path.go):
             self.download_go = False
-        if os.path.isfile(self.path.kegg_blast):
-            self.download_kegg = False
+        kegg_pep = os.path.join(self.path.ko_pep_dir,
+                                '{abbr}.pep.fasta'.format(
+                                    abbr=self.path.kegg_abbr))
+        kegg_pep_index = ['{p}.{suf}'.format(p=kegg_pep, suf=suf)
+                          for suf in ('pin', 'phr', 'psq')]
+        for each_index in kegg_pep_index:
+            if not os.path.isfile(each_index):
+                self.download_kegg = True
+                break
 
     def _download_gtf(self):
         if self.download_gtf:
@@ -114,7 +122,6 @@ class DownloadDB(object):
         self._get_script()
         if self.download_kegg:
             download_cmd = config.CMD['download_kegg'].format(t=self)
-            print download_cmd
             r = envoy.run(download_cmd)
             return r.std_err
         else:

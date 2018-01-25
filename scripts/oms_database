@@ -43,7 +43,14 @@ from omdatabase.database.db_path import DatabasePath
     default='download',
     help='Choose to download, build or update database.',
 )
-def main(species, database, version, analysis, run):
+@click.option(
+    '-l',
+    '--launch',
+    type=click.Choice(['local', 'slurm']),
+    default='local',
+    help='Choose to launch job local or on slurm.'
+)
+def main(species, database, version, analysis, run, launch):
     '''Command line tool for prepare database for NGS analysis
     '''
     # login ftp and get species database information
@@ -55,12 +62,15 @@ def main(species, database, version, analysis, run):
     my_dbpath = DatabasePath.from_dbobj(my_db_inf)
 
     # download database to local
+    click.secho('Dowonload database to local path.')
     my_download = DownloadDB(my_db_inf, my_dbpath)
     my_download.download
 
     if run == 'build':
         # build index for database
-        my_build = BuildIndex(my_db_inf, my_dbpath, analysis)
+        click.secho('Build index and other prepare work.')
+        my_build = BuildIndex(my_db_inf, my_dbpath,
+                              analysis=analysis, launch=launch)
         my_build.build
 
 

@@ -1,3 +1,9 @@
+!!python/unicode 'arabidopsis_thaliana':
+  ensembl-release-38: [TAIR10, /pub/plants/release-38/fasta/arabidopsis_thaliana/dna/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz,
+    /pub/plants/release-38/gtf/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.38.gtf.gz]
+!!python/unicode 'danio_rerio':
+  ensembl-release-91: [GRCz10, /pub/release-91/fasta/danio_rerio/dna/Danio_rerio.GRCz10.dna.toplevel.fa.gz,
+    /pub/release-91/gtf/danio_rerio/Danio_rerio.GRCz10.91.gtf.gz]
 !!python/unicode 'oryza_sativa':
   ensembl-release-38: [IRGSP-1.0, /pub/plants/release-38/fasta/oryza_sativa/dna/Oryza_sativa.IRGSP-1.0.dna.toplevel.fa.gz,
     /pub/plants/release-38/gtf/oryza_sativa/Oryza_sativa.IRGSP-1.0.38.gtf.gz]
