@@ -4,7 +4,11 @@ from omdatabase.utils import config
 import re
 import os
 
-HOST_DICT = {'animal': 'ftp.ensembl.org', 'plant': 'ftp.ensemblgenomes.org'}
+HOST_DICT = {
+    'animal': 'ftp.ensembl.org', 
+    'plant': 'ftp.ensemblgenomes.org',
+    'fungi': 'ftp.ensemblgenomes.org'
+}
 
 
 def ftp_login(func):
@@ -46,7 +50,7 @@ class DatabaseInf(object):
             if self.kingdom == 'animal':
                 self.ftp.cwd('/pub/current_fasta/')
             else:
-                self.ftp.cwd('/pub/plants/current/')
+                self.ftp.cwd('/pub/{t.kingdom}/current/'.format(t=self))
             self.release = self.ftp.pwd().split('/')[2]
         return self.release
 
@@ -55,7 +59,7 @@ class DatabaseInf(object):
             return '/pub/{t.release}/{d}/{t.species}/'.format(
                 t=self, d=data_type)
         else:
-            return '/pub/plants/{t.release}/{d}/{t.species}/'.format(
+            return '/pub/{t.kingdom}/{t.release}/{d}/{t.species}/'.format(
                 t=self, d=data_type)
 
     @ftp_login
