@@ -1,2 +1,2 @@
-{!!python/unicode 'arabidopsis_thaliana': !!python/unicode 'plant', !!python/unicode 'danio_rerio': !!python/unicode 'animal',
-  !!python/unicode 'oryza_sativa': !!python/unicode 'plant'}
+{!!python/unicode 'arabidopsis_thaliana': !!python/unicode 'plant', !!python/unicode 'aspergillus_nidulans': !!python/unicode 'plant',
+  !!python/unicode 'danio_rerio': !!python/unicode 'animal', !!python/unicode 'oryza_sativa': !!python/unicode 'plant'}

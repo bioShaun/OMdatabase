@@ -67,6 +67,8 @@ CMD:
        {t.path.go}
        {t.path.go_detail}
        {t.path.go_anno} |
+       python {t.get_gene_len_py}
+       |
        touch {t.path.anno_dir}/go.finished'
   kegg: 'blastp
          -query {t.path.anno_dir}/{t.db.species}.transcript.pep.fa
@@ -93,6 +95,7 @@ CMD:
 SCRIPT:
   get_gene2tr_py: 'get_gene_to_trans.py'
   download_go_r: 'biomart_download.R'
+  get_gene_len_py: 'gene_length.py'
   get_topgo_py: 'topgo_format.py'
   get_go_anno_py: 'go_anno.py'
   kegg_blast_tr2gene_py: 'kegg_blast_tr_to_gene.py'

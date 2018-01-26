@@ -104,6 +104,7 @@ taxdump
 
 # test script
 test*
+Log.out
 
 # updating yaml
 database.yaml
