@@ -24,11 +24,11 @@ Usage: oms_database [OPTIONS]
   Command line tool for prepare database for NGS analysis
   
   Options:
-    -s, --species TEXT              Species latin name.  [required]
+	-s, --species TEXT              Species latin name.  [required]
 	-d, --database TEXT             Public database name.
 	-v, --version TEXT              Database version.
 	-a, --analysis TEXT             Analysis for which the database is build for.
-	-r, --run [download|build]  Choose to download, build or update
+	-r, --run [download|build]      Choose to download, build or update
 	-l, --launch [local|slurm]      Choose to launch job local or on slurm.
 	--help                          Show this message and exit.
 
