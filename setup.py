@@ -23,7 +23,8 @@ setup(
         'pyyaml',
         'HTSeq',
         'gtfparse',
-        'ujson'
+        'ujson',
+        'click'
     ],
 )
 
