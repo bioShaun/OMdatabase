@@ -24,7 +24,8 @@ setup(
         'HTSeq',
         'gtfparse',
         'ujson',
-        'click'
+        'click',
+        'envoy'
     ],
 )
 
