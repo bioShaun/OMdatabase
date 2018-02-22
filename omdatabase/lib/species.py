@@ -37,6 +37,7 @@ class Species(object):
         self.tax_dir = os.path.join(script_path, 'taxdump')
         self.name2gi = dict()
         self.gi2div = dict()
+        self.fungi_dict = dict()
         self.name2kingdom = dict()
 
     def _get_species_inf(self):
@@ -44,6 +45,10 @@ class Species(object):
         name_inf_file = os.path.join(self.tax_dir, 'names.dmp')
         gi2div_json = os.path.join(self.tax_dir, 'gi2div.json')
         gi2div_file = os.path.join(self.tax_dir, 'nodes.dmp')
+        fungi_json = os.path.join(self.tax_dir, 'species_metadata_EnsemblFungi.json')
+
+        with open(fungi_json) as fg_inf:
+            self.fungi_dict = json.load(fg_inf)
 
         @load_json
         def get_div_inf(*args):
@@ -79,13 +84,16 @@ class Species(object):
         if not os.path.exists(name2kingdom_file):
             self._get_species_inf()
             for each_name in self.name2gi:
+                outname = '_'.join(each_name.split())
                 for each_cat in self.name2gi[each_name]:
                     gi = self.name2gi[each_name][each_cat]
                     if self.gi2div[gi] == '4':
-                        kingdom = 'plant'
+                        if outname in self.fungi_dict[0]['compara'][0]['genomes']:
+                            kingdom = 'fungi'
+                        else:
+                            kingdom = 'plant'
                     else:
                         kingdom = 'animal'
-                    outname = '_'.join(each_name.split())
                     self.name2kingdom[outname] = kingdom
             with open(name2kingdom_file, 'wb') as kingdom_inf:
                 ujson.dump(self.name2kingdom, kingdom_inf)
