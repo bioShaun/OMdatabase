@@ -1,6 +1,9 @@
 !!python/unicode 'arabidopsis_thaliana':
   ensembl-release-38: [TAIR10, /pub/plants/release-38/fasta/arabidopsis_thaliana/dna/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz,
     /pub/plants/release-38/gtf/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.38.gtf.gz]
+!!python/unicode 'aspergillus_nidulans':
+  ensembl-release-38: [ASM1142v1, /pub/fungi/release-38/fasta/aspergillus_nidulans/dna/Aspergillus_nidulans.ASM1142v1.dna.toplevel.fa.gz,
+    /pub/fungi/release-38/gtf/aspergillus_nidulans/Aspergillus_nidulans.ASM1142v1.38.gtf.gz]
 !!python/unicode 'danio_rerio':
   ensembl-release-91: [GRCz10, /pub/release-91/fasta/danio_rerio/dna/Danio_rerio.GRCz10.dna.toplevel.fa.gz,
     /pub/release-91/gtf/danio_rerio/Danio_rerio.GRCz10.91.gtf.gz]

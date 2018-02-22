@@ -27,12 +27,18 @@ ensembl_plant <- useMart("plants_mart", host="plants.ensembl.org")
 ensembl_plant_database <- listDatasets(ensembl_plant)
 plant_name <- paste(data_name, 'eg_gene', sep = '_')
 
+ensembl_fungi <- useMart("fungi_mart", host="fungi.ensembl.org")
+ensembl_fungi_database <- listDatasets(ensembl_fungi)
+fungi_name <- paste(data_name, 'eg_gene', sep = '_')
+
 if (animal_name %in% ensembl_animal_database[,1]) {
   ensembl <- useDataset(animal_name, mart = ensembl_animal)
 } else if (plant_name %in% ensembl_plant_database[,1]) {
   ensembl <- useDataset(plant_name, mart = ensembl_plant)
+} else if (fungi_name %in% ensembl_fungi_database[,1]) {
+  ensembl <- useDataset(plant_name, mart = ensembl_fungi)
 } else {
-  stop('animal not in ensembl database')
+  stop('species not in ensembl database')
 }
 
 
