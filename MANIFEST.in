@@ -1,0 +1,6 @@
+include README.md LICENSE
+include omdatabase/database/organism.yaml
+include omdatabase/utils/organism.yaml
+include omdatabase/utils/config_defaults.yaml
+include omdatabase/utils/database.yaml
+include omdatabase/utils/kingdom.yaml
