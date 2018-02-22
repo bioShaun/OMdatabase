@@ -2,6 +2,7 @@
 
 Command line tool for prepare database for NGS analysis.
 Currently only support [Ensembl](http://asia.ensembl.org/index.html) database.
+[![Build Status](https://travis-ci.org/bioShaun/OMdatabase.svg?branch=master)](https://travis-ci.org/bioShaun/OMdatabase)
 
 -----
 
