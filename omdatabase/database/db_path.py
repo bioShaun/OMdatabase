@@ -1,6 +1,6 @@
 from omdatabase.utils import config
 import os
-import kobas.config as kobas_config
+import omdatabase.lib.kobas.config as kobas_config
 
 
 class DatabasePath(object):
