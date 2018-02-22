@@ -39,7 +39,7 @@ from omdatabase.database.db_path import DatabasePath
 @click.option(
     '-r',
     '--run',
-    type=click.Choice(['download', 'build', 'update']),
+    type=click.Choice(['download', 'build']),
     default='download',
     help='Choose to download, build or update database.',
 )
@@ -48,7 +48,7 @@ from omdatabase.database.db_path import DatabasePath
     '--launch',
     type=click.Choice(['local', 'slurm']),
     default='local',
-    help='Choose to launch job local or on slurm.'
+    help='Choose to launch job local or on slurm. Only support local currently.'
 )
 def main(species, database, version, analysis, run, launch):
     '''Command line tool for prepare database for NGS analysis
