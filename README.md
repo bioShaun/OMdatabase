@@ -16,7 +16,7 @@ pip install .
 
 ## Usage
 
-```bash
+```
 oms_database --help
 
 Usage: oms_database [OPTIONS]
